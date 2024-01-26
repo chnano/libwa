@@ -126,7 +126,10 @@ action_takeover(wa_t *wa)
 wa_t *
 wa_init(cb_t *cb, const char *config_dir)
 {
-	wa_t *wa = calloc(1, sizeof(wa_t));
+	wa_t *wa = calloc(1, sizeof(wa_t)); 
+	//wa 是在這裡才有分配空間，在原來的main中，只是把它指向了 NULL
+	//然後由於用了 calloc ，所以最後整個return回去也沒問題
+	
 	wa->run = 1;
 
 	wa->d = dispatch_init();
