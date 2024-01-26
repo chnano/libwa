@@ -58,7 +58,7 @@ input_worker(void *ptr)
 int
 main(int argc, char *argv[])
 {
-	pthread_t th;
+	pthread_t th; //pthread_t 是有關linux的data type (沒有定義)
 	char config_dir[PATH_MAX];
 
 	jid = argv[1];
@@ -69,18 +69,27 @@ main(int argc, char *argv[])
 		return 1;
 	}
 
-	cb_t *cb;
+	cb_t *cb; 
+	//cb_t 是存放void, 2個callbacks function
+	//*cb 是cb_t的instance，但用了pointer，由下面 calloc 去分配空間
 
 	cb = calloc(sizeof(cb_t), 1);
 
-	cb->priv_msg = cb_priv_msg,
-	cb->update_user = cb_update_user,
+	//以下兩個雖然是逗號，但其實也一樣的
+	cb->priv_msg = cb_priv_msg, //把function給cb->priv_msg
+	cb->update_user = cb_update_user, //把function給cb->update_user
 
-	getcwd(config_dir, PATH_MAX);
+	getcwd(config_dir, PATH_MAX); 
+	//getcwd 是取得linux的當前目錄
+	//然後再把當前目錄放在 config_dir 中
 
-	strcat(config_dir, "/config");
+	strcat(config_dir, "/config"); 
+	//strcat 是合併字串
+	//所以config_dir應該會是 "/home/peter/libwa/config"
 
-	wa = wa_init(cb, config_dir);
+	wa = wa_init(cb, config_dir); 
+	//wa 是在main外面定義的，它應該是最大的一個struct，成員包恬了 cb_t
+	//現在要初始化它
 
 	wa_login(wa);
 
